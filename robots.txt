@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /dashboard/login.html
+Disallow: /dashboard/index.html
+Disallow: /assets/js/supabase.js
+
+# Sitemap location
+Sitemap: https://tanvirislam.vercel.app/sitemap.xml
+
+# Crawl-delay for respectful bots
+Crawl-delay: 1

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Tanvir Islam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase.js"></script>
+  <style>
+    /* ── VARIABLES (same as main site) ── */
+    :root {
+      --bg:          #050a14;
+      --bg-card:     #0c1428;
+      --blue:        #1a6fff;
+      --blue-glow:   #2979ff;
+      --cyan:        #00e5ff;
+      --text:        #e8f0fe;
+      --text-muted:  #8899bb;
+      --border:      rgba(26,111,255,.15);
+      --border-hi:   rgba(26,111,255,.4);
+      --radius:      14px;
+      --font-head:   'Space Grotesk', sans-serif;
+      --font-body:   'Plus Jakarta Sans', sans-serif;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Animated background */
+    body::before {
+      content:'';
+      position:fixed; inset:0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(26,111,255,.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(0,229,255,.07) 0%, transparent 50%);
+      pointer-events:none;
+    }
+    /* Floating orbs */
+    .orb {
+      position:fixed; border-radius:50%;
+      filter:blur(80px); pointer-events:none; animation:float 8s ease-in-out infinite;
+    }
+    .orb-1 { width:300px;height:300px; background:rgba(26,111,255,.15); top:-10%; left:-5%; animation-delay:0s; }
+    .orb-2 { width:200px;height:200px; background:rgba(0,229,255,.1);   bottom:-5%; right:-5%; animation-delay:-4s; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+
+    /* Grid bg */
+    body::after {
+      content:'';
+      position:fixed; inset:0;
+      background-image: linear-gradient(rgba(26,111,255,.02) 1px,transparent 1px),
+                        linear-gradient(90deg,rgba(26,111,255,.02) 1px,transparent 1px);
+      background-size: 60px 60px;
+      pointer-events:none;
+    }
+
+    /* ── LOGIN CARD ── */
+    .login-card {
+      background: rgba(12,20,40,.85);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border-hi);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      width: 100%; max-width: 420px;
+      position: relative; z-index: 1;
+      box-shadow: 0 40px 100px rgba(0,0,0,.5), 0 0 0 1px rgba(26,111,255,.1);
+      animation: slideUp .5s cubic-bezier(.34,1.56,.64,1) forwards;
+    }
+    @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    /* Top glow line */
+    .login-card::before {
+      content:'';
+      position:absolute; top:0; left:10%; right:10%; height:1px;
+      background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), var(--blue), transparent);
+      border-radius:50%;
+    }
+
+    /* Logo */
+    .login-logo {
+      text-align: center; margin-bottom: 2rem;
+    }
+    .login-logo .logo-mark {
+      font-family: var(--font-head);
+      font-size: 2.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+    .login-logo .logo-sub {
+      font-size: .78rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 2px; margin-top:.3rem;
+    }
+
+    /* Shield badge */
+    .admin-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .35rem 1rem;
+      background: rgba(26,111,255,.1);
+      border: 1px solid var(--border-hi);
+      border-radius: 30px;
+      font-size: .75rem; color: #7ab8ff;
+      font-family: var(--font-head);
+      margin-bottom: 1.8rem;
+    }
+
+    h1 {
+      font-family: var(--font-head);
+      font-size: 1.55rem; font-weight: 700;
+      margin-bottom: .4rem;
+      letter-spacing: -.3px;
+    }
+    .login-subtitle { font-size: .85rem; color: var(--text-muted); margin-bottom: 2rem; }
+
+    /* Form */
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block; font-size: .78rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: .8px;
+      margin-bottom: .45rem;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position:absolute; left:1rem; top:50%; transform:translateY(-50%);
+      color: var(--text-muted); font-size: .9rem; pointer-events:none;
+      transition: color .3s;
+    }
+    .input-wrap input {
+      width:100%; padding:.85rem 1rem .85rem 2.8rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--font-body); font-size: .9rem;
+      outline: none; transition: border-color .3s, box-shadow .3s, background .3s;
+    }
+    .input-wrap input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(26,111,255,.12);
+      background: rgba(26,111,255,.04);
+    }
+    .input-wrap input:focus + i,
+    .input-wrap:focus-within i { color: var(--blue); }
+    /* Password toggle */
+    .input-wrap .pw-toggle {
+      position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+      color: var(--text-muted); cursor:pointer; font-size:.9rem;
+      pointer-events:all; transition:color .3s; left:auto;
+    }
+    .input-wrap .pw-toggle:hover { color: var(--blue); }
+
+    /* Submit button */
+    .btn-login {
+      width:100%; padding:.95rem;
+      background: linear-gradient(135deg, var(--blue), var(--blue-glow));
+      color: white; border:none; border-radius: 10px;
+      font-family: var(--font-head); font-size: .95rem; font-weight: 700;
+      cursor:pointer; transition: all .3s;
+      box-shadow: 0 4px 20px rgba(26,111,255,.35);
+      display:flex; align-items:center; justify-content:center; gap:.5rem;
+      margin-top: 1.5rem;
+    }
+    .btn-login:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 30px rgba(26,111,255,.5); }
+    .btn-login:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+    /* Spinner inside button */
+    .spinner {
+      width:16px; height:16px; border:2px solid rgba(255,255,255,.3);
+      border-top-color:white; border-radius:50%;
+      animation:spin .7s linear infinite; display:none;
+    }
+    .btn-login.loading .spinner { display:block; }
+    .btn-login.loading .btn-text { display:none; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* Error alert */
+    .alert {
+      padding:.85rem 1rem; border-radius:10px;
+      font-size:.85rem; margin-bottom:1.2rem;
+      display:none; align-items:center; gap:.6rem;
+      animation: shake .4s ease;
+    }
+    .alert.show { display:flex; }
+    .alert-error { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); color:#fca5a5; }
+    @keyframes shake {
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)}
+      40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}
+    }
+
+    /* Back link */
+    .back-link {
+      text-align:center; margin-top:1.8rem;
+      font-size:.82rem; color: var(--text-muted);
+    }
+    .back-link a { color:#7ab8ff; text-decoration:none; transition:color .2s; }
+    .back-link a:hover { color:var(--cyan); }
+
+    /* Security note */
+    .security-note {
+      margin-top:1.5rem; padding:.8rem 1rem;
+      background:rgba(0,229,255,.05);
+      border:1px solid rgba(0,229,255,.12);
+      border-radius:8px;
+      font-size:.75rem; color:var(--text-muted);
+      display:flex; align-items:flex-start; gap:.5rem;
+      line-height:1.6;
+    }
+    .security-note i { color:var(--cyan); margin-top:1px; flex-shrink:0; }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="login-card">
+
+    <!-- Logo -->
+    <div class="login-logo">
+      <div class="logo-mark">TI.</div>
+      <div class="logo-sub">Portfolio System</div>
+    </div>
+
+    <!-- Admin badge -->
+    <div style="text-align:center">
+      <div class="admin-badge">
+        <i class="fas fa-shield-halved"></i> Admin Access Only
+      </div>
+    </div>
+
+    <h1>Welcome back</h1>
+    <p class="login-subtitle">Sign in to manage your portfolio, blog, and messages.</p>
+
+    <!-- Error alert -->
+    <div class="alert alert-error" id="alert">
+      <i class="fas fa-circle-exclamation"></i>
+      <span id="alert-msg">Invalid email or password.</span>
+    </div>
+
+    <!-- Login form -->
+    <form id="login-form" autocomplete="off">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" placeholder="admin@email.com" required autocomplete="email">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+          <i class="fas fa-eye pw-toggle" id="pw-toggle"></i>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="login-btn">
+        <div class="spinner"></div>
+        <span class="btn-text"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</span>
+      </button>
+    </form>
+
+    <!-- Security note -->
+    <div class="security-note">
+      <i class="fas fa-lock"></i>
+      This dashboard is restricted to authorised administrators only. Unauthorised access attempts are logged.
+    </div>
+
+    <div class="back-link">
+      <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to portfolio</a>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Check if already logged in ──
+    (async () => {
+      const user = await getAuthUser();
+      if (user && user.email === '2023.tanvirislam@gmail.com') {
+        window.location.href = 'index.html';
+      }
+    })();
+
+    // ── Password toggle ──
+    const pwInput  = document.getElementById('password');
+    const pwToggle = document.getElementById('pw-toggle');
+    pwToggle.addEventListener('click', () => {
+      const isText = pwInput.type === 'text';
+      pwInput.type = isText ? 'password' : 'text';
+      pwToggle.className = `fas fa-${isText ? 'eye' : 'eye-slash'} pw-toggle`;
+    });
+
+    // ── Login form submit ──
+    const form    = document.getElementById('login-form');
+    const btn     = document.getElementById('login-btn');
+    const alert   = document.getElementById('alert');
+    const alertMsg= document.getElementById('alert-msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alert.classList.remove('show');
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Block non-admin immediately
+      if (email !== '2023.tanvirislam@gmail.com') {
+        alertMsg.textContent = 'Access denied. Unauthorised email address.';
+        alert.classList.add('show');
+        return;
+      }
+
+      // Loading state
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      const { user, error } = await authSignIn(email, password);
+
+      btn.classList.remove('loading');
+      btn.disabled = false;
+
+      if (error || !user) {
+        alertMsg.textContent = error?.message || 'Login failed. Check your credentials.';
+        alert.classList.add('show');
+        document.getElementById('password').value = '';
+        return;
+      }
+
+      // Success → go to dashboard
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
