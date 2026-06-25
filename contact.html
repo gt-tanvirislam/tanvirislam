@@ -348,5 +348,82 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.js"></script>
   <script src="assets/js/dynamic.js"></script>
+
+  <!-- EmailJS — sends form data directly to Gmail -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // ── EmailJS Config ──
+    const EMAILJS_SERVICE_ID  = 'service_p7bnb9m';
+    const EMAILJS_TEMPLATE_ID = 'template_ungi4bl';
+    const EMAILJS_PUBLIC_KEY  = 'hwF7Ug5XE34x31Uij';
+
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    // ── Override contact form submit ──
+    document.addEventListener('DOMContentLoaded', () => {
+      const form    = document.getElementById('contact-form');
+      const success = document.getElementById('contact-success');
+      const overlay = document.getElementById('form-sending-overlay');
+      const btn     = form ? form.querySelector('[type=submit]') : null;
+
+      if (!form) return;
+
+      // Remove old submit listeners by cloning
+      const newForm = form.cloneNode(true);
+      form.parentNode.replaceChild(newForm, form);
+
+      newForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name    = newForm.querySelector('#name')?.value?.trim()    || '';
+        const email   = newForm.querySelector('#email')?.value?.trim()   || '';
+        const phone   = newForm.querySelector('#phone')?.value?.trim()   || '';
+        const service = newForm.querySelector('#service')?.value         || '';
+        const budget  = newForm.querySelector('#budget')?.value          || '';
+        const message = newForm.querySelector('#message')?.value?.trim() || '';
+
+        if (!name || !email || !message) {
+          alert('Please fill in Name, Email, and Message.');
+          return;
+        }
+
+        // Show sending overlay
+        if (overlay) overlay.classList.add('show');
+        const submitBtn = newForm.querySelector('[type=submit]');
+        if (submitBtn) { submitBtn.disabled = true; }
+
+        try {
+          // Send via EmailJS to Gmail
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            from_name:  name,
+            from_email: email,
+            phone:      phone   || 'Not provided',
+            service:    service || 'Not specified',
+            budget:     budget  || 'Not specified',
+            message:    message,
+            email:      email,  // for Reply-To
+          });
+
+          // Also save to Supabase (if connected)
+          try {
+            await submitMessage({ name, email, phone, service, budget, message, status: 'unread' });
+          } catch(e) { /* silently fail if Supabase not connected */ }
+
+          // Show success
+          if (overlay) overlay.classList.remove('show');
+          newForm.style.display = 'none';
+          if (success) success.classList.add('show');
+
+        } catch (error) {
+          if (overlay) overlay.classList.remove('show');
+          if (submitBtn) submitBtn.disabled = false;
+          console.error('EmailJS error:', error);
+          alert('Failed to send message. Please email me directly at 2023.tanvirislam@gmail.com');
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
