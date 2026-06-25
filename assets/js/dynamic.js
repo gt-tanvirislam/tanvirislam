@@ -64,9 +64,10 @@ async function loadFeaturedProjects() {
   container.innerHTML = projects.map(p => buildProjectCard(p)).join('');
   initLazyImages();
 
-  // Attach click handlers for modal
+  // Cache projects and attach click handlers for modal
+  _projectCache = projects;
   container.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => openProjectModal(card.dataset.id));
+    card.addEventListener('click', () => openProjectModal(card.dataset.id, projects));
   });
 }
 
