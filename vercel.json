@@ -12,5 +12,13 @@
       "source": "/dashboard/login",
       "destination": "/dashboard/login.html"
     }
+  ],
+  "headers": [
+    {
+      "source": "/dashboard/(.*).css",
+      "headers": [
+        { "key": "Content-Type", "value": "text/css" }
+      ]
+    }
   ]
 }
