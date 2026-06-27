@@ -1,7 +1,8 @@
 {
   "version": 2,
   "name": "tanvir-islam-portfolio",
-  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "routes": [
     {
       "src": "/dashboard",
