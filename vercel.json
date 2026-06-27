@@ -3,21 +3,14 @@
   "name": "tanvir-islam-portfolio",
   "cleanUrls": true,
   "trailingSlash": false,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/dashboard",
-      "dest": "/dashboard/index.html"
+      "source": "/dashboard",
+      "destination": "/dashboard/index.html"
     },
     {
-      "src": "/dashboard/login",
-      "dest": "/dashboard/login.html"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/dashboard/login",
+      "destination": "/dashboard/login.html"
     }
   ]
 }
