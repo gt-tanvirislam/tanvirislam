@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Blog by Tanvir Islam — Tips, tutorials, and insights on video editing, graphic design, and freelancing.">
   <title>Blog | Tanvir Islam</title>
-  <!-- Favicon -->
-    <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -68,7 +66,7 @@
     <!-- Dynamic featured post loaded from Supabase -->
     <div id="blog-featured-dynamic" style="display:none;margin-bottom:3rem"></div>
     <!-- Static fallback (hidden if Supabase loads) -->
-    <a href="post.html" class="blog-featured reveal" id="blog-featured-static" style="text-decoration:none;color:inherit">
+    <a href="post.html" class="blog-featured reveal" id="blog-featured-static" style="text-decoration:none;color:inherit;display:none">
       <div class="blog-featured-thumb" style="background:linear-gradient(135deg,#0a1428,#1a0a40)">🎬</div>
       <div class="blog-featured-body">
         <div class="blog-featured-tag"><i class="fas fa-film"></i> Video Editing</div>
@@ -98,113 +96,8 @@
 
     <!-- BLOG GRID -->
     <div class="blog-grid" id="blog-dynamic-grid">
-
-      <div class="blog-card reveal" data-category="video" style="transition-delay:0.05s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#0a1428,#0d2045)">🎬</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Video Editing</div>
-          <h3>How I Edit a YouTube Video in Under 4 Hours (My Full Workflow)</h3>
-          <p>From raw footage to final export — I break down my exact editing process step by step, including the keyboard shortcuts and plugins that save me the most time.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Nov 28, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="design" style="transition-delay:0.1s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#1a0828,#280a40)">🎨</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Graphic Design</div>
-          <h3>5 Logo Design Mistakes That Kill Your Brand (And How to Fix Them)</h3>
-          <p>After designing 200+ logos, I've seen the same mistakes over and over. Here's how to avoid them and create a logo that actually builds trust and recognition.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Nov 10, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="freelance" style="transition-delay:0.15s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#0a2814,#0a3820)">💼</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Freelancing</div>
-          <h3>How I Landed My First International Client From Dhaka</h3>
-          <p>My honest story of going from zero to working with clients in the USA and UK — the platforms I used, the mistakes I made, and what actually worked for me.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Oct 22, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="video" style="transition-delay:0.2s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#1a0a14,#300a20)">📱</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Video Editing</div>
-          <h3>The 3 Reel Editing Tricks That Get My Clients More Views</h3>
-          <p>Instagram Reels and TikTok are all about the first 2 seconds. I reveal the hook techniques, transition styles, and pacing secrets that drive real engagement.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Oct 5, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="design" style="transition-delay:0.25s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#082828,#0a3838)">📊</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Graphic Design</div>
-          <h3>How to Design Social Media Posts That Actually Convert</h3>
-          <p>Pretty isn't enough. I share the design psychology behind high-performing social posts — colour theory, hierarchy, CTA placement, and the power of white space.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Sep 18, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="freelance" style="transition-delay:0.3s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#281408,#402008)">💰</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Freelancing</div>
-          <h3>How to Price Your Video Editing Services (Stop Undercharging!)</h3>
-          <p>Underpricing is the #1 mistake new freelancers make. I break down exactly how to calculate your rates, what to charge per minute, and how to raise prices without losing clients.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Sep 2, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="video" style="transition-delay:0.35s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#0a1040,#0a1860)">✨</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Video Editing</div>
-          <h3>After Effects vs Premiere Pro — Which Should You Learn First?</h3>
-          <p>A practical comparison for beginners: what each tool does best, which one is easier to start with, and my recommended learning path based on your goals.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Aug 14, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-card reveal" data-category="design" style="transition-delay:0.4s">
-        <div class="blog-card-thumb" style="background:linear-gradient(135deg,#1a0828,#2a0840)">🏷️</div>
-        <div class="blog-card-body">
-          <div class="blog-tag">Graphic Design</div>
-          <h3>The Difference Between a Good Logo and a Great One</h3>
-          <p>What makes Nike's swoosh timeless? Why does Apple's logo work at any size? A deep dive into the principles behind iconic logo design — and how to apply them.</p>
-          <div class="blog-card-footer">
-            <span><i class="fas fa-calendar-alt" style="margin-right:0.3rem"></i>Jul 30, 2024</span>
-            <a href="post.html" class="read-more-link">Read More <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /blog-grid -->
-
+      <!-- Posts loaded dynamically from Supabase -->
+    </div>
     <!-- NEWSLETTER -->
     <div class="newsletter-box reveal">
       <h3>Get Creative Tips <span class="gradient-text">In Your Inbox</span></h3>
