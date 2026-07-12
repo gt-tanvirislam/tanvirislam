@@ -323,6 +323,10 @@ async function loadBlogPage() {
   const featured = document.getElementById('blog-featured-dynamic');
   if (!grid) return;
 
+  // Always clear static content first
+  grid.innerHTML = '';
+  if (featured) featured.style.display = '';
+
   // Skeletons
   grid.innerHTML = Array(6).fill(`
     <div class="skeleton-card">
