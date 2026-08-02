@@ -432,7 +432,17 @@ function getCategoryEmoji(cat) {
    ════════════════════════════════════════════════════════════ */
 async function loadSinglePost() {
   const params = new URLSearchParams(window.location.search);
-  const slug   = params.get('slug');
+  let slug = params.get('slug');
+  
+  // Handle clean URL: /post/my-slug-here
+  if (!slug) {
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    // e.g. /post/my-slug → ['post', 'my-slug']
+    if (pathParts.length >= 2 && pathParts[0] === 'post') {
+      slug = pathParts[1];
+    }
+  }
+  
   if (!slug) return;
 
   const post = await getPost(slug);
@@ -612,15 +622,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadBlogPage();
   }
 
-  if (page === 'post.html') {
+  if (page === 'post.html' || page === 'post') {
     await loadSinglePost();
   }
 
-  if (page === 'testimonials.html') {
+  if (page === 'testimonials.html' || page === 'testimonials') {
     await loadDynamicTestimonials('testimonials-dynamic-container', { limit: 20 });
   }
 
-  if (page === 'contact.html') {
+  if (page === 'contact.html' || page === 'contact') {
     initDynamicContactForm();
   }
 
