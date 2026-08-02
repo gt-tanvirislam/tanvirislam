@@ -594,16 +594,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyPageSettings();
 
   // Page-specific loaders
-  if (page === 'index.html' || page === '') {
+  if (page === 'index.html' || page === '' || page === 'index') {
     await loadFeaturedProjects();
     await loadDynamicTestimonials('testimonials-dynamic-container', { featured: true, limit: 3 });
   }
 
-  if (page === 'portfolio.html') {
+  if (page === 'portfolio.html' || page === 'portfolio') {
     await loadPortfolioPage();
   }
 
-  if (page === 'blog.html') {
+  if (page === 'blog.html' || page === 'blog') {
+    // Clear any static content first
+    const grid = document.getElementById('blog-dynamic-grid');
+    if (grid) grid.innerHTML = '';
+    const featured = document.getElementById('blog-featured-dynamic');
+    if (featured) featured.style.display = '';
     await loadBlogPage();
   }
 
