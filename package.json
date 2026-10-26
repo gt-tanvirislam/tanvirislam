@@ -1,0 +1,7 @@
+{
+  "name": "tanvir-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tanvir.Studio website with Supabase powered dashboard",
+  "engines": { "node": ">=18" }
+}

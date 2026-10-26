@@ -1,0 +1,11 @@
+UPDATE PACKAGE (safe for your live site)
+
+This package does NOT contain assets/js/config.js, so your Supabase URL and key stay untouched.
+
+How to use:
+1. Unzip this package.
+2. Open the folder "tanvir-studio-update" and select everything inside it.
+3. On GitHub: Add file > Upload files > drag everything in > Commit changes.
+4. Vercel redeploys by itself in about a minute.
+
+Never upload a file called config.js from a downloaded zip. Keep the one that is already on GitHub.
